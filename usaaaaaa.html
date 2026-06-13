@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usachis Treasure - Tienda</title>
+    <!-- Librería de EmailJS -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script type="text/javascript">
+        emailjs.init("PLpPqaMoJMEIglLQX");
+    </script>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            background-color: #fff0f2;
+            /* PROPIEDADES DE MÁXIMA FUERZA PARA TU FONDO DE 1920x1080 */
+            background-image: url('fondo.png') !important;
+            background-repeat: no-repeat !important;
+            background-position: center center !important;
+            background-attachment: fixed !important;
+            background-size: cover !important; /* Cubre toda la pantalla adaptándose con la mejor calidad */
+            color: #4d3d40;
+            margin: 0;
+            padding: 15px;
+            line-height: 1.4;
+        }
+        .wrapper {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        /* DECORACIONES LATERALES */
+        .decoracion-lateral-izq {
+            position: fixed;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 120px;
+            z-index: 10;
+            opacity: 0.9;
+            text-align: center;
+        }
+        .decoracion-lateral-der {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 120px;
+            z-index: 10;
+            opacity: 0.9;
+            text-align: center;
+        }
+        
+        .decoracion-lateral-izq img, .decoracion-lateral-der img {
+            width: 100%;
+            height: auto;
+            margin-bottom: 25px;
+            display: block;
+        }
+
+        /* LOGO PRINCIPAL MAXI */
+        .logo-contenedor {
+            text-align: center;
+            margin-bottom: 20px;
+            margin-top: 10px;
+        }
+        .logo-tienda {
+            width: 260px;
+            height: 260px;
+            object-fit: contain;
+            border-radius: 50%;
+            border: 3px solid #f5d6dc;
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 8px;
+            box-shadow: 0 6px 15px rgba(240, 125, 150, 0.2);
+        }
+
+        header {
+            text-align: center;
+            padding: 25px 15px;
+            background: rgba(255, 255, 255, 0.93);
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(240, 125, 150, 0.15);
+            margin-bottom: 15px;
+            border: 2px solid #f5d6dc;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2.4rem;
+            color: #f07d96;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+        }
+        header p {
+            margin: 5px 0 0 0;
+            color: #8c7679;
+            font-size: 1.15rem;
+            font-style: italic;
+        }
+        .header-info {
+            flex: 1;
+        }
+        .img-chii {
+            width: 70px;
+            height: auto;
+            object-fit: contain;
+        }
+
+        .separador-cute {
+            text-align: center;
+            margin: 25px 0;
+        }
+        .separador-cute img {
+            max-width: 100%;
+            height: auto;
+            object-fit: contain;
+        }
+
+        .search-container {
+            margin-bottom: 20px;
+            width: 100%;
+        }
+        .search-input {
+            width: 100%;
+            padding: 12px 15px;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 1.1rem;
+            border: 2px solid #f5d6dc;
+            border-radius: 12px;
+            background-color: rgba(255, 255, 255, 0.95);
+            color: #4d3d40;
+            outline: none;
+            box-shadow: 0 4px 6px rgba(240, 125, 150, 0.05);
+        }
+        .search-input:focus {
+            border-color: #f07d96;
+            box-shadow: 0 0 8px rgba(240, 125, 150, 0.2);
+        }
+        .main-layout {
+            display: block;
+            width: 100%;
+        }
+        .productos-grid {
+            display: block;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            padding: 16px;
+            border: 2px solid #f5d6dc;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+            margin-bottom: 15px;
+            width: 100%;
+        }
+        .card h3 {
+            margin: 5px 0 5px 0;
+            font-size: 1.3rem;
+            color: #4d3d40;
+        }
+        .contenedor-imagenes {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            background: #fffcfc;
+            border-radius: 10px;
+        }
+        .contenedor-imagenes::-webkit-scrollbar {
+            height: 6px;
+        }
+        .contenedor-imagenes::-webkit-scrollbar-thumb {
+            background: #f5d6dc;
+            border-radius: 10px;
+        }
+        .img-producto {
+            width: 100%;
+            height: 280px;
+            object-fit: contain;
+            border-radius: 10px;
+            border: 1px solid #f5d6dc;
+            background-color: #fffcfc;
+        }
+        .card .img-producto-doble {
+            flex: 0 0 auto;
+            width: 70%;
+            height: 250px;
+            object-fit: contain;
+            border-radius: 10px;
+            border: 1px solid #f5d6dc;
+            background-color: #fffcfc;
+        }
+        .desc-tag {
+            font-size: 0.95rem;
+            color: #6e5a5c;
+            margin: 0 0 8px 0;
+            font-style: italic;
+        }
+        .precio-tag {
+            font-weight: bold;
+            color: #f07d96;
+            font-size: 1.2rem;
+            margin: 0 0 5px 0;
+        }
+        .stock-tag {
+            font-size: 0.9rem;
+            color: #8c7679;
+            background: #fff0f2;
+            padding: 3px 8px;
+            border-radius: 6px;
+            display: inline-block;
+            border: 1px solid #f5d6dc;
+            margin-bottom: 10px;
+        }
+        .controles-compra {
+            background: #fffcfc;
+            border-top: 1px dashed #f5d6dc;
+            padding-top: 10px;
+        }
+        .control-group {
+            margin-bottom: 8px;
+        }
+        .control-group label {
+            display: block;
+            font-size: 0.85rem;
+            color: #8c7679;
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+        .controles-compra select {
+            width: 100%;
+            padding: 8px;
+            border: 2px solid #f5d6dc;
+            border-radius: 8px;
+            background-color: white;
+            color: #4d3d40;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 1rem;
+        }
+        .btn-agregar {
+            background-color: #ffa6b9;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            font-family: 'Times New Roman', Times, serif;
+            width: 100%;
+            font-size: 1.05rem;
+            margin-top: 5px;
+        }
+        .btn-agregar:disabled {
+            background-color: #e0e0e0;
+            color: #a0a0a0;
+            cursor: not-allowed;
+        }
+        .panel-carrito {
+            background: rgba(255, 255, 255, 0.96);
+            padding: 20px;
+            border-radius: 20px;
+            border: 2px solid #f5d6dc;
+            box-shadow: 0 4px 10px rgba(240, 125, 150, 0.1);
+            width: 100%;
+            margin-top: 20px;
+        }
+        .panel-carrito h2 {
+            margin: 0 0 15px 0;
+            font-size: 1.5rem;
+            color: #4d3d40;
+            border-bottom: 2px solid #f5d6dc;
+            padding-bottom: 6px;
+        }
+        .carrito-vacio {
+            color: #8c7679;
+            text-align: center;
+            padding: 20px 10px;
+            font-style: italic;
+            font-size: 1.1rem;
+        }
+        .item-carrito {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fff0f2;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            border: 1px solid #f5d6dc;
+        }
+        .item-info {
+            width: 80%;
+        }
+        .item-info strong {
+            display: block;
+            font-size: 1.05rem;
+        }
+        .btn-eliminar {
+            background: #ff6b81;
+            color: white;
+            border: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+        .total-seccion {
+            border-top: 2px dashed #f5d6dc;
+            padding-top: 12px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .total-monto {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: #f07d96;
+        }
+        .btn-checkout {
+            background-color: #f07d96;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: bold;
+            font-family: 'Times New Roman', Times, serif;
+            width: 100%;
+            font-size: 1.15rem;
+        }
+        .btn-checkout:disabled {
+            background-color: #e0e0e0;
+            color: #a0a0a0;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(77, 61, 64, 0.6);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 10px;
+        }
+        .modal-content {
+            background: white;
+            padding: 20px;
+            border-radius: 20px;
+            max-width: 440px;
+            width: 100%;
+            border: 2px solid #f5d6dc;
+        }
+        .form-group {
+            margin-bottom: 12px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 4px;
+            font-weight: bold;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #f5d6dc;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: 'Times New Roman', Times, serif;
+        }
+        .info-pago-box {
+            background: #f0f7ff;
+            border-left: 4px solid #3b82f6;
+            padding: 12px;
+            margin: 10px 0;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            border-radius: 4px;
+        }
+        .btn-submit {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            color: white;
+            font-weight: bold;
+            font-size: 1.1rem;
+            font-family: 'Times New Roman', Times, serif;
+            cursor: pointer;
+        }
+        
+        @media (max-width: 1150px) {
+            .decoracion-lateral-izq, .decoracion-lateral-der {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- DECORACIONES LATERALES -->
+<div class="decoracion-lateral-izq">
+    <img src="sylveon.png">
+    <img src="nyancat.png">
+    <img src="mune.png">
+</div>
+<div class="decoracion-lateral-der">
+    <img src="mune.png">
+    <img src="nyancat.png">
+    <img src="sylveon.png">
+</div>
+
+<div class="wrapper">
+    <!-- LOGO PRINCIPAL -->
+    <div class="logo-contenedor">
+        <img src="logo.png" class="logo-tienda" alt="Logo">
+    </div>
+
+    <!-- CABECERA CON CHIIKAWA -->
+    <header>
+        <img src="chii.png" class="img-chii">
+        <div class="header-info">
+            <h1>Usachis Treasure</h1>
+            <p>Elige tus cositas favoritas (｡◕‿◕｡) ➜</p>
+        </div>
+        <img src="chii.png" class="img-chii">
+    </header>
+
+    <div class="search-container">
+        <input type="text" id="input-busqueda" class="search-input" placeholder="‹3 Buscar productos... (ej: llavero, sticker, ddlc)" oninput="filtrarProductos()">
+    </div>
+
+    <!-- SEPARADOR PASTELITOS -->
+    <div class="separador-cute">
+        <img src="pastelitos.png" alt="Separador">
+    </div>
+
+    <div class="main-layout">
+        <div class="productos-grid" id="contenedor-productos"></div>
+
+        <!-- SEPARADOR ESPIRALES -->
+        <div class="separador-cute">
+            <img src="espirales.png" alt="Separador">
+        </div>
+
+        <div class="panel-carrito">
+            <h2>‹3 Tu Pedido (•‿•)</h2>
+            <div id="lista-carrito">
+                <div class="carrito-vacio">El carrito está vacío. 📋</div>
+            </div>
+            <div class="total-seccion">
+                <h3>Total actual:</h3>
+                <div class="total-monto">$<span id="txt-total">0</span></div>
+            </div>
+            <button id="btn-comprar" class="btn-checkout" onclick="abrirDatosCliente()" disabled>Comprar Ahora (｡♥‿♥｡)</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL DATOS CLIENTE -->
+<div id="modal-datos" class="modal">
+    <div class="modal-content">
+        <h2 style="margin-top:0; color:#4d3d40; border-bottom:2px solid #f5d6dc; padding-bottom:6px;">‹3 Tus Datos</h2>
+        <form id="form-datos-cliente">
+            <div class="form-group">
+                <label>Nombre:</label>
+                <input type="text" id="inp-nombre" required placeholder="Tu nombre">
+            </div>
+            <div class="form-group">
+                <label>Apellido:</label>
+                <input type="text" id="inp-apellido" required placeholder="Tu apellido">
+            </div>
+            <div class="form-group">
+                <label>Teléfono Celular:</label>
+                <input type="tel" id="inp-telefono" required placeholder="Ej: 1123456789">
+            </div>
+            <div class="form-group">
+                <label>Método de Entrega:</label>
+                <select id="sel-entrega" onchange="alternarEnvioOpcion()">
+                    <option value="encuentro">Punto de encuentro (A convenir)</option>
+                    <option value="envio">Envío a domicilio (Recargo de $2500)</option>
+                </select>
+            </div>
+            <div class="form-group" id="grupo-direccion" style="display:none;">
+                <label>Dirección Completa:</label>
+                <input type="text" id="inp-direccion" placeholder="Calle, Número, Localidad">
+            </div>
+            <button type="submit" class="btn-submit" style="background-color:#ffa6b9;">Continuar (っ•‿•)っ</button>
+        </form>
+    </div>
+</div>
+
+<!-- MODAL MODO PAGO -->
+<div id="modal-pago" class="modal">
+    <div class="modal-content">
+        <h2 style="margin-top:0; color:#4d3d40; border-bottom:2px solid #f5d6dc; padding-bottom:6px;">‹3 Modo de Pago</h2>
+        <p style="margin: 5px 0 15px 0; font-size:1.1rem;">Total final a pagar: <b>$<span id="txt-monto-final">0</span></b></p>
+        
+        <div class="form-group">
+            <label>Selecciona cómo deseas abonar:</label>
+            <select id="sel-pago" onchange="alternarInfoPago()">
+                <option value="">-- Elige una opción --</option>
+                <option value="transferencia">Transferencia (Banco Nación)</option>
+                <option value="efectivo">Efectivo (Con 50% de seña previa)</option>
+            </select>
+        </div>
+
+        <div id="caja-info-pago" class="info-pago-box" style="display:none;"></div>
+
+        <button id="btn-confirmar-final" class="btn-submit" style="background-color:#f07d96; margin-top:10px;" onclick="enviarPedidoFinal()">Aceptar y Enviar Pedido (っˆڡˆς)</button>
+    </div>
+</div>
+
+<script>
+    const inventario = [
+        { id: 1, nombre: "Hebillas estrella", esPromo: true, pUnidad: 500, cPromo: 3, pPromo: 1300, stock: 50, desc: "¡Hermoso accesorio para tu cabello!", img: ["hebillasestrella.jpg"] },
+        { id: 2, nombre: "Stickers Sanrio", esPromo: true, pUnidad: 300, cPromo: 5, pPromo: 1300, stock: 46, desc: "Medidas aproximadas: 5,4 x 5,4 cm", img: ["stickerssanrio.jpg"] },
+        { id: 3, nombre: "Stickers Chiikawa", esPromo: true, pUnidad: 300, cPromo: 5, pPromo: 1300, stock: 59, desc: "Medidas aproximadas: 4 x 3,5 cm", img: ["stickerschiikawa.jpg"] },
+        { id: 4, nombre: "Straps estrella", esPromo: false, precio: 2500, stock: 5, desc: "Hermosos colgantes estrella para tu celu.", tieneVariantes: true, variantes: ["Morado", "Rosa", "Celeste", "Amarillo", "Verde"], img: ["strapsestrella.jpg"] },
+        { id: 5, nombre: "Llavero PJSK", esPromo: false, precio: 3500, stock: 18, desc: "Medidas aproximadas: 5x4 cm. ¡Elegí tu personaje!", tieneVariantes: true, variantes: ["Mafuyu", "Ena", "Mizuki", "Akito", "Toya", "An", "Kohane", "Airi", "Minori", "Haruka", "Tsukasa", "Emu", "Nene", "Ichika", "Saki", "Honami", "Shiho", "Kanade"], img: ["llaverospjsk.jpg"] },
+        { id: 6, nombre: "Llavero Chiikawa", esPromo: false, precio: 5500, stock: 3, desc: "Medidas aproximadas: 10x7 cm", img: ["llaverochiikawa.jpg"] },
+        { id: 7, nombre: "Post it Pompurin", esPromo: false, precio: 2500, stock: 2, desc: "Medidas aproximadas: 7x12 cm", img: ["postitpompompurin.jpg"] },
+        { id: 8, nombre: "Post it Chocomenta", esPromo: false, precio: 2500, stock: 3, desc: "Medidas aproximadas: 7x15 cm", img: ["postitchocomenta.jpg"] },
+        { id: 9, nombre: "Billetera", esPromo: false, precio: 3500, stock: 5, desc: "Medidas aproximadas: 11x8 cm. Diseños súper lindos.", tieneVariantes: true, variantes: ["Kuromi", "Kuromi Púrpura", "Pompompurin", "Cinnamoroll", "My Melody"], img: ["billeteras.jpg"] },
+        { id: 10, nombre: "Plancha de stickers chiikawa", esPromo: false, precio: 3500, stock: 10, desc: "¡Llená de ternura tus cuadernos!", img: ["planchastickerchiikawa.jpg"] },
+        { id: 11, nombre: "Porta photocards", esPromo: false, precio: 5000, stock: 6, desc: "Protegé tus cartas favoritas con estilo.", tieneVariantes: true, variantes: ["Black flower", "White notes", "Kaomoji rosa", "Kaomoji negro"], img: ["portaphotocard1.jpg", "portaphotocard2.jpg", "portaphotocard3.jpg", "portaphotocard4.jpg"] },
+        { id: 12, nombre: "Llaveros DDLC", esPromo: false, precio: 4000, stock: 4, desc: "Tamaño aproximado: 5,5 cm. Del videojuego Doki Doki Literature Club.", tieneVariantes: true, variantes: ["Monika", "Sayori", "Natsuki", "Yuri"], img: ["llaverosddlc.jpg"] },
+        { id: 13, nombre: "Figura acrilico DDLC", esPromo: false, precio: 5000, stock: 4, desc: "Tamaño aproximado: 6 cm. Perfectas para adornar tu espacio.", tieneVariantes: true, variantes: ["Monika", "Sayori", "Natsuki", "Yuri"], img: ["figuraacrilicoddlc.jpg"] },
+        { id: 14, nombre: "Llaveros TBHK", esPromo: false, precio: 4000, stock: 7, desc: "Tamaño aproximado: 5,5 cm. De Toilet-Bound Hanako-kun.", tieneVariantes: true, variantes: ["Tsukasa", "Hanako", "Nene", "Kou", "Sakura", "Sosuke", "Tsuchigomori"], img: ["llaverostbhk.jpg"] },
+        { id: 15, nombre: "Hebillas polka dots", esPromo: false, precio: 2500, stock: 12, desc: "El precio corresponde a un par.", img: ["hebillaspolka.jpg"] },
+        { id: 16, nombre: "Monedero manzana", esPromo: false, precio: 4500, stock: 2, desc: "Lindo y práctico accesorio para tus monedas.", tieneVariantes: true, variantes: ["Manzana verde", "Manzana roja"], img: ["monederomanzana.jpg"] },
+        { id: 17, nombre: "Hebillas pez", esPromo: false, precio: 2800, stock: 6, desc: "El precio corresponde a un par.", img: ["hebillaspez.jpg"] },
+        { id: 18, nombre: "Collar murciélago gótico", esPromo: false, precio: 5000, stock: 3, desc: "Accesorio dark súper único.", img: ["collarmurcielago.jpg"] },
+        { id: 19, nombre: "Llavero foca", esPromo: false, precio: 3500, stock: 8, desc: "Una foca marina muy cute para llevar con vos.", img: ["llaverofoca.jpg"] },
+        { id: 20, nombre: "Cartuchera", esPromo: false, precio: 0, stock: 3, desc: "¡Guardá todos tus lápices!", tieneVariantes: true, variantes: ["Gatito", "My Melody"], usaPrecioVariante: true, img: ["cartucheragatito.jpg", "cartucheramymelody.jpg"] },
+        { id: 21, nombre: "Pines cute", esPromo: false, precio: 1700, stock: 12, desc: "Tamaño aproximado: 25 mm. Geniales para tu mochila.", img: ["pinescute1.jpg", "pinescute2.jpg"] },
+        { id: 22, nombre: "Llaveros alien stage", esPromo: false, precio: 3500, stock: 6, desc: "¡Llená a tus personajes favoritos de ALNST!", tieneVariantes: true, variantes: ["Hyuna", "Luka", "Ivan", "Till", "Mizi", "Sua"], img: ["llaverosalienstage.jpg"] }
+    ];
+
+    let stockVariantes = {
+        "Straps estrella": { "Morado": 1, "Rosa": 1, "Celeste": 1, "Amarillo": 1, "Verde": 1 },
+        "Llavero PJSK": { "Mafuyu": 1, "Ena": 1, "Mizuki": 1, "Akito": 1, "Toya": 1, "An": 1, "Kohane": 1, "Airi": 1, "Minori": 1, "Haruka": 1, "Tsukasa": 1, "Emu": 1, "Nene": 1, "Ichika": 1, "Saki": 1, "Honami": 1, "Shiho": 1, "Kanade": 1 },
+        "Billetera": { "Kuromi": 1, "Kuromi Púrpura": 1, "Pompompurin": 1, "Cinnamoroll": 1, "My Melody": 1 },
+        "Porta photocards": { "Black flower": 2, "White notes": 2, "Kaomoji rosa": 1, "Kaomoji negro": 1 },
+        "Llaveros DDLC": { "Monika": 1, "Sayori": 1, "Natsuki": 1, "Yuri": 1 },
+        "Figura acrilico DDLC": { "Monika": 1, "Sayori": 1, "Natsuki": 1, "Yuri": 1 },
+        "Llaveros TBHK": { "Tsukasa": 1, "Hanako": 1, "Nene": 1, "Kou": 1, "Sakura": 1, "Sosuke": 1, "Tsuchigomori": 1 },
+        "Monedero manzana": { "Manzana verde": 1, "Manzana roja": 1 },
+        "Cartuchera": { "Gatito": 2, "My Melody": 1 },
+        "Llaveros alien stage": { "Hyuna": 1, "Luka": 1, "Ivan": 1, "Till": 1, "Mizi": 1, "Sua": 1 }
+    };
+
+    const preciosVariantes = {
+        "Cartuchera": { "Gatito": 8000, "My Melody": 10000 }
+    };
+
+    let carrito = [];
+    let cliente = {};
+
+    function inicializarTienda() {
+        const contenedor = document.getElementById("contenedor-productos");
+        if(!contenedor) return;
+        contenedor.innerHTML = "";
+
+        inventario.forEach(prod => {
+            let opcionesVariante = "";
+            let selectorModelos = "";
+            let elementoImagen = "";
+
+            if (prod.img && prod.img.length > 0) {
+                elementoImagen = `<div class="contenedor-imagenes">`;
+                prod.img.forEach(src => {
+                    let claseImg = prod.img.length > 1 ? "img-producto-doble" : "img-producto";
+                    elementoImagen += `<img src="${src}" class="${claseImg}" alt="">`;
+                });
+                elementoImagen += `</div>`;
+            }
+
+            let precioAMostrar = prod.esPromo ? `Unidad: $${prod.pUnidad} | Pack: $${prod.pPromo}` : `$${prod.precio} c/u`;
+            if (prod.usaPrecioVariante) {
+                precioAMostrar = "Gatito: $8000 | My Melody: $10000";
+            }
+
+            if (prod.esPromo) {
+                opcionesVariante = `
+                    <div class="control-group">
+                        <label>Opción de precio:</label>
+                        <select id="sel-tipo-${prod.id}" onchange="cambiarVarianteCantidad(${prod.id})">
+                            <option value="unidad">1 unidad ($${prod.pUnidad})</option>
+                            <option value="promo">${prod.cPromo} unidades ($${prod.pPromo})</option>
+                        </select>
+                    </div>
+                `;
+            }
+
+            if (prod.tieneVariantes) {
+                let opcionesHTML = "";
+                prod.variantes.forEach(v => {
+                    const disp = stockVariantes[prod.nombre][v];
+                    if (disp > 0) {
+                        opcionesHTML += `<option value="${v}">${v}</option>`;
+                    }
+                });
+
+                if (opcionesHTML === "") {
+                    selectorModelos = `
+                        <div class="control-group">
+                            <label>Modelo / Variante:</label>
+                            <select id="sel-modelo-${prod.id}" disabled><option>Modelos Agotados</option></select>
+                        </div>`;
+                } else {
+                    selectorModelos = `
+                        <div class="control-group">
+                            <label>Modelo / Variante:</label>
+                            <select id="sel-modelo-${prod.id}" onchange="actualizarSelectorCantidad(${prod.id})">${opcionesHTML}</select>
+                        </div>`;
+                }
+            }
+
+            contenedor.innerHTML += `
+                <div class="card" data-nombre="${prod.nombre.toLowerCase()}" data-desc="${prod.desc.toLowerCase()}">
+                    <div>
+                        ${elementoImagen}
+                        <h3>${prod.nombre}</h3>
+                        <p class="desc-tag">${prod.desc}</p>
+                        <p class="precio-tag">${precioAMostrar}</p>
+                        <span class="stock-tag">Stock: <span id="stock-val-${prod.id}">${prod.stock}</span> disp.</span>
+                    </div>
+                    <div class="controles-compra">
+                        ${selectorModelos}
+                        ${opcionesVariante}
+                        <div class="control-group">
+                            <label>Cantidad:</label>
+                            <select id="sel-cant-${prod.id}"></select>
+                        </div>
+                        <button id="btn-add-${prod.id}" class="btn-agregar" onclick="agregarProductoAlCarrito(${prod.id})">Agregar (っ•‿•)っ</button>
+                    </div>
+                </div>
+            `;
+            actualizarSelectorCantidad(prod.id);
+        });
+    }
+
+    function filtrarProductos() {
+        const textoBusqueda = document.getElementById("input-busqueda").value.toLowerCase().trim();
+        const tarjetas = document.querySelectorAll(".productos-grid .card");
+
+        tarjetas.forEach(tarjeta => {
+            const nombre = tarjeta.getAttribute("data-nombre");
+            const descripcion = tarjeta.getAttribute("data-desc");
+
+            if (nombre.includes(textoBusqueda) || descripcion.includes(textoBusqueda)) {
+                tarjeta.style.display = "block";
+            } else {
+                tarjeta.style.display = "none";
+            }
+        });
+    }
+
+    function actualizarSelectorCantidad(id) {
+        const prod = inventario.find(p => p.id === id);
+        const selectorCant = document.getElementById(`sel-cant-${id}`);
+        const selectorTipo = document.getElementById(`sel-tipo-${id}`);
+        const selectorMod = document.getElementById(`sel-modelo-${id}`);
+        const btn = document.getElementById(`btn-add-${id}`);
+        
+        if (!selectorCant) return;
+        selectorCant.innerHTML = "";
+
+        let stockDisponible = prod.stock;
+
+        if (prod.tieneVariantes && selectorMod) {
+            const modeloSeleccionado = selectorMod.value;
+            stockDisponible = stockVariantes[prod.nombre][modeloSeleccionado] || 0;
+        }
+
+        if (stockDisponible <= 0 || prod.stock <= 0) {
+            selectorCant.innerHTML = '<option value="0">Sin stock (´•__•`)</option>';
+            if(btn) btn.disabled = true;
+            return;
+        }
+
+        if(btn) btn.disabled = false;
+        let incremento = 1;
+        let maximo = stockDisponible;
+
+        if (selectorTipo && selectorTipo.value === "promo") {
+            incremento = prod.cPromo;
+            maximo = Math.floor(stockDisponible / prod.cPromo) * prod.cPromo;
+
+            if (maximo === 0) {
+                selectorCant.innerHTML = '<option value="0">Falta stock para pack</option>';
+                if(btn) btn.disabled = true;
+                return;
+            }
+        }
+
+        for (let i = incremento; i <= maximo; i += incremento) {
+            if (selectorTipo && selectorTipo.value === "promo") {
+                selectorCant.innerHTML += `<option value="${i}">${i / prod.cPromo} Pack(s) (${i} uds)</option>`;
+            } else {
+                selectorCant.innerHTML += `<option value="${i}">${i} unidad(es)</option>`;
+            }
+        }
+    }
+
+    function cambiarVarianteCantidad(id) {
+        actualizarSelectorCantidad(id);
+    }
+
+    function agregarProductoAlCarrito(id) {
+        const prod = inventario.find(p => p.id === id);
+        const selectorCant = document.getElementById(`sel-cant-${id}`);
+        const selectorTipo = document.getElementById(`sel-tipo-${id}`);
+        const selectorMod = document.getElementById(`sel-modelo-${id}`);
+        const cantidadAComprar = parseInt(selectorCant.value);
+
+        if (cantidadAComprar <= 0 || isNaN(cantidadAComprar)) return;
+
+        let txtNombre = prod.nombre;
+        let modeloElegido = "";
+        let precioBaseCalculo = prod.precio;
+
+        if (prod.tieneVariantes && selectorMod) {
+            modeloElegido = selectorMod.value;
+            txtNombre = `${prod.nombre}. ${modeloElegido}`;
+            stockVariantes[prod.nombre][modeloElegido] -= cantidadAComprar;
+            
+            if (prod.usaPrecioVariante) {
+                precioBaseCalculo = preciosVariantes[prod.nombre][modeloElegido];
+            }
+        }
+
+        let costoFinal = 0;
+        if (prod.esPromo && selectorTipo && selectorTipo.value === "promo") {
+            const packs = cantidadAComprar / prod.cPromo;
+            costoFinal = packs * prod.pPromo;
+            txtNombre += ` (Pack x${prod.cPromo})`;
+        } else if (prod.esPromo) {
+            costoFinal = cantidadAComprar * prod.pUnidad;
+        } else {
+            costoFinal = cantidadAComprar * precioBaseCalculo;
+        }
+
+        prod.stock -= cantidadAComprar;
+
+        carrito.push({
+            idUnico: Date.now() + Math.random(),
+            idProducto: prod.id,
+            nombre: txtNombre,
+            nombreBase: prod.nombre,
+            varianteNombre: modeloElegido,
+            canvasCantidad: cantidadAComprar,
+            precio: costoFinal
+        });
+
+        actualizarVisualCarrito();
+        inicializarTienda();
+        document.getElementById("input-busqueda").value = ""; 
+    }
+
+    function quitarDelCarrito(idUnico, idProducto, cantidad, nombreBase, varianteNombre) {
+        const prod = inventario.find(p => p.id === idProducto);
+        if (prod) prod.stock += cantidad;
+
+        if (varianteNombre) {
+            stockVariantes[nombreBase][varianteNombre] += cantidad;
+        }
+
+        carrito = carrito.filter(item => item.idUnico !== idUnico);
+
+        actualizarVisualCarrito();
+        inicializarTienda();
+    }
+
+    function obtenerTotales() {
+        let sumaDinero = 0;
+        let sumaUnidades = 0;
+        carrito.forEach(item => {
+            sumaDinero += item.precio;
+            sumaUnidades += item.canvasCantidad;
+        });
+        return { sumaDinero, sumaUnidades };
+    }
+
+    function actualizarVisualCarrito() {
+        const contenedor = document.getElementById("lista-carrito");
+        const btnComprar = document.getElementById("btn-comprar");
+        if(!contenedor) return;
+        contenedor.innerHTML = "";
+
+        const { sumaDinero } = obtenerTotales();
+
+        if (carrito.length === 0) {
+            contenedor.innerHTML = '<div class="carrito-vacio">El carrito está vacío. 📋</div>';
+            if(btnComprar) btnComprar.disabled = true;
+            document.getElementById("txt-total").innerText = "0";
+            return;
+        }
+
+        if(btnComprar) btnComprar.disabled = false;
+        carrito.forEach(item => {
+            contenedor.innerHTML += `
+                <div class="item-carrito">
+                    <div class="item-info">
+                        <strong>${item.nombre}</strong>
+                        <small>Cant: ${item.canvasCantidad} unidades • Subtotal: $${item.precio}</small>
+                    </div>
+                    <button class="btn-eliminar" onclick="quitarDelCarrito(${item.idUnico}, ${item.idProducto}, ${item.canvasCantidad}, '${item.nombreBase}', '${item.varianteNombre}')">✕</button>
+                </div>
+            `;
+        });
+
+        document.getElementById("txt-total").innerText = sumaDinero;
+    }
+
+    function abrirDatosCliente() {
+        document.getElementById("modal-datos").style.display = "flex";
+    }
+
+    function alternarEnvioOpcion() {
+        const metodo = document.getElementById("sel-entrega").value;
+        const divDir = document.getElementById("grupo-direccion");
+        const inpDir = document.getElementById("inp-direccion");
+
+        if (metodo === "envio") {
+            divDir.style.display = "block";
+            if(inpDir) inpDir.required = true;
+        } else {
+            divDir.style.display = "none";
+            if(inpDir) {
+                inpDir.required = false;
+                inpDir.value = "";
+            }
+        }
+    }
+
+    function guardarDatosCliente() {
+        cliente = {
+            nombre: document.getElementById("inp-nombre").value,
+            apellido: document.getElementById("inp-apellido").value,
+            telefono: document.getElementById("inp-telefono").value,
+            entrega: document.getElementById("sel-entrega").value,
+            direccion: document.getElementById("inp-direccion").value || "Punto de encuentro"
+        };
+
+        const { sumaDinero } = obtenerTotales();
+        const recargoEnvio = cliente.entrega === "envio" ? 2500 : 0;
+        
+        document.getElementById("txt-monto-final").innerText = sumaDinero + recargoEnvio;
+        document.getElementById("modal-datos").style.display = "none";
+        document.getElementById("modal-pago").style.display = "flex";
+    }
+
+    function alternarInfoPago() {
+        const metodoPago = document.getElementById("sel-pago").value;
+        const cajaInfo = document.getElementById("caja-info-pago");
+        
+        if (!metodoPago) {
+            cajaInfo.style.display = "none";
+            return;
+        }
+        
+        cajaInfo.style.display = "block";
+        
+        if (metodoPago === "efectivo") {
+            cajaInfo.innerHTML = `
+                <strong>‹3 Aviso de Reserva Importante:</strong><br>
+                En caso de pagar con efectivo deberás abonar al menos el <b>50%</b> del valor total mediante transferencia bancaria.<br><br>
+                <b>Datos de Cuenta (Banco Nación):</b><br>
+                • CBU / Alias: [Completa aquí tu Alias o CBU del Banco Nación]<br>
+                • A nombre de: <b>Violeta Toconas</b><br><br>
+                Una vez hecho el depósito, envía el comprobante al Instagram de la tienda: <b>@usachistresure</b>
+            `;
+        } else if (metodoPago === "transferencia") {
+            cajaInfo.innerHTML = `
+                <strong>Datos de Cuenta (Banco Nación):</strong><br>
+                • CBU / Alias: [Completa aquí tu Alias o CBU del Banco Nación]<br>
+                • A nombre de: <b>Violeta Toconas</b><br><br>
+                ¡Importante! Al finalizar, recordá mandar la captura del comprobante al Instagram de la tienda: <b>@usachistresure</b>
+            `;
+        }
+    }
+
+    function enviarPedidoFinal() {
+        const pago = document.getElementById("sel-pago").value;
+        if (!pago) {
+            alert("Por favor, selecciona un modo de pago.");
+            return;
+        }
+
+        const btnFinal = document.getElementById("btn-confirmar-final");
+        if(btnFinal) {
+            btnFinal.disabled = true;
+            btnFinal.innerText = "Procesando pedido... (u_u)";
+        }
+
+        const { sumaDinero, sumaUnidades } = obtenerTotales();
+        const recargoEnvio = cliente.entrega === "envio" ? 2500 : 0;
+        const totalNeto = sumaDinero + recargoEnvio;
+
+        let listadoHTML = "<ul style='padding-left: 20px; line-height: 1.6;'>";
+        carrito.forEach(item => {
+            listadoHTML += `<li><strong>${item.nombre}</strong> — Cantidad: ${item.canvasCantidad} unidades (Subtotal: $${item.precio})</li>`;
+        });
+        listadoHTML += "</ul>";
+
+        const variablesTemplate = {
+            to_email: "violetatoconas10@gmail.com",
+            cliente_nombre: `${cliente.nombre} ${cliente.apellido}`,
+            cliente_telefono: cliente.telefono,
+            metodo_entrega: cliente.entrega === "envio" ? `Envío a domicilio a: ${cliente.direccion}` : "Punto de encuentro",
+            metodo_pago: pago === "transferencia" ? "TRANSFERENCIA (BANCO NACIÓN)" : "EFECTIVO",
+            productos_detalle: listadoHTML,
+            total_productos: sumaUnidades,
+            total_dinero: totalNeto
+        };
+
+        const SERVICE_ID = "service_c0ss7k9"; 
+        const TEMPLATE_ID = "template_392qcwh"; 
+
+        emailjs.send(SERVICE_ID, TEMPLATE_ID, variablesTemplate)
+            .then(function(response) {
+                alert("¡Muchas gracias por tu compra! (っ•‿•)っ\nPronto nos pondremos en contacto contigo para confirmar el pedido.");
+                
+                carrito = [];
+                actualizarVisualCarrito();
+                document.getElementById("modal-pago").style.display = "none";
+                document.getElementById("form-datos-cliente").reset();
+                document.getElementById("sel-pago").value = "";
+                if(btnFinal) {
+                    btnFinal.disabled = false;
+                    btnFinal.innerText = "Aceptar y Enviar Pedido (っˆڡˆς)";
+                }
+            }, function(error) {
+                console.error("Fallo EmailJS:", error);
+                alert("Hubo un error de conexión al intentar enviar el correo. (´•__•`) Por favor intenta de nuevo.");
+                if(btnFinal) {
+                    btnFinal.disabled = false;
+                    btnFinal.innerText = "Aceptar y Enviar Pedido (っˆڡˆς)";
+                }
+            });
+    }
+
+    document.getElementById("form-datos-cliente").addEventListener("submit", function(event) {
+        event.preventDefault();
+        guardarDatosCliente();
+    });
+
+    document.getElementById("input-busqueda").value = "";
+
+    inicializarTienda();
+</script>
+
+</body>
+</html>
