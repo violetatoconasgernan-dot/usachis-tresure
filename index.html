@@ -16,12 +16,12 @@
         body {
             font-family: 'Times New Roman', Times, serif;
             background-color: #fff0f2;
-            /* PROPIEDADES DE MÁXIMA FUERZA PARA TU FONDO DE 1920x1080 */
-            background-image: url('fondo.png') !important;
+            /* TRIPLE COMPATIBILIDAD DE FONDO POR SI ES PNG, PNG MAYÚSCULA O JPG */
+            background-image: url('fondo.png'), url('fondo.PNG'), url('fondo.jpg'), url('fondo.JPG');
             background-repeat: no-repeat !important;
             background-position: center center !important;
             background-attachment: fixed !important;
-            background-size: cover !important; /* Cubre toda la pantalla adaptándose con la mejor calidad */
+            background-size: cover !important;
             color: #4d3d40;
             margin: 0;
             padding: 15px;
@@ -62,7 +62,7 @@
             display: block;
         }
 
-        /* LOGO PRINCIPAL MAXI */
+        /* LOGO PRINCIPAL */
         .logo-contenedor {
             text-align: center;
             margin-bottom: 20px;
@@ -393,7 +393,7 @@
             border: none;
             color: white;
             font-weight: bold;
-            font-size: 1.1rem;
+            font-size: 1.1()rem;
             font-family: 'Times New Roman', Times, serif;
             cursor: pointer;
         }
@@ -407,49 +407,48 @@
 </head>
 <body>
 
-<!-- DECORACIONES LATERALES -->
+<!-- DECORACIONES LATERALES CON FALLBACKS AUTOMÁTICOS -->
 <div class="decoracion-lateral-izq">
-    <img src="sylveon.png">
-    <img src="nyancat.png">
-    <img src="mune.png">
+    <img src="sylveon.png" onerror="this.src='sylveon.PNG'; this.onerror=function(){this.src='sylveon.gif';};">
+    <img src="nyancat.png" onerror="this.src='nyancat.PNG'; this.onerror=function(){this.src='nyancat.gif';};">
+    <img src="mune.png" onerror="this.src='mune.PNG'; this.onerror=function(){this.src='mune.jpg';};">
 </div>
 <div class="decoracion-lateral-der">
-    <img src="mune.png">
-    <img src="nyancat.png">
-    <img src="sylveon.png">
+    <img src="mune.png" onerror="this.src='mune.PNG'; this.onerror=function(){this.src='mune.jpg';};">
+    <img src="nyancat.png" onerror="this.src='nyancat.PNG'; this.onerror=function(){this.src='nyancat.gif';};">
+    <img src="sylveon.png" onerror="this.src='sylveon.PNG'; this.onerror=function(){this.src='sylveon.gif';};">
 </div>
 
 <div class="wrapper">
-    <!-- LOGO PRINCIPAL -->
+    <!-- LOGO CON DOBLE EXTENSIÓN DE RESPALDO -->
     <div class="logo-contenedor">
-        <img src="logo.png" class="logo-tienda" alt="Logo">
+        <img src="logo.png" onerror="this.src='logo.PNG'; this.onerror=function(){this.src='logo.jpg'; this.onerror=function(){this.src='logo.JPG';};};" class="logo-tienda" alt="Logo">
     </div>
 
     <!-- CABECERA CON CHIIKAWA -->
     <header>
-        <img src="chii.png" class="img-chii">
+        <img src="chii.png" class="img-chii" onerror="this.src='chii.PNG'; this.onerror=function(){this.src='chii.webp';};">
         <div class="header-info">
             <h1>Usachis Treasure</h1>
             <p>Elige tus cositas favoritas (｡◕‿◕｡) ➜</p>
         </div>
-        <img src="chii.png" class="img-chii">
+        <img src="chii.png" class="img-chii" onerror="this.src='chii.PNG'; this.onerror=function(){this.src='chii.webp';};">
     </header>
 
     <div class="search-container">
         <input type="text" id="input-busqueda" class="search-input" placeholder="‹3 Buscar productos... (ej: llavero, sticker, ddlc)" oninput="filtrarProductos()">
     </div>
 
-    <!-- SEPARADOR PASTELITOS -->
+    <!-- SEPARADORES CON DOBLE EXTENSIÓN -->
     <div class="separador-cute">
-        <img src="pastelitos.png" alt="Separador">
+        <img src="pastelitos.png" onerror="this.src='pastelitos.PNG'; this.onerror=function(){this.src='pastelitos.jpg'; this.onerror=function(){this.src='pastelitos.JPG';};};" alt="Separador">
     </div>
 
     <div class="main-layout">
         <div class="productos-grid" id="contenedor-productos"></div>
 
-        <!-- SEPARADOR ESPIRALES -->
         <div class="separador-cute">
-            <img src="espirales.png" alt="Separador">
+            <img src="espirales.png" onerror="this.src='espirales.PNG'; this.onerror=function(){this.src='espirales.jpg'; this.onerror=function(){this.src='espirales.JPG';};};" alt="Separador">
         </div>
 
         <div class="panel-carrito">
@@ -521,6 +520,24 @@
 </div>
 
 <script>
+    // FUNCION DE COMPATIBILIDAD EXTRA PARA LAS IMÁGENES DE LOS PRODUCTOS
+    function intentarCargarImagenProducto(elemento, baseSrc) {
+        let extensiones = ['.jpg', '.JPG', '.png', '.PNG', '.jpeg', '.JPEG'];
+        let nombreSinExt = baseSrc.substring(0, baseSrc.lastIndexOf('.'));
+        let indiceActual = 0;
+
+        elemento.onerror = function() {
+            if (indiceActual < extensiones.length) {
+                let nuevaRuta = nombreSinExt + extensiones[indiceActual];
+                indiceActual++;
+                this.src = nuevaRuta;
+            } else {
+                this.onerror = null; 
+                this.style.display = 'none';
+            }
+        };
+    }
+
     const inventario = [
         { id: 1, nombre: "Hebillas estrella", esPromo: true, pUnidad: 500, cPromo: 3, pPromo: 1300, stock: 50, desc: "¡Hermoso accesorio para tu cabello!", img: ["hebillasestrella.jpg"] },
         { id: 2, nombre: "Stickers Sanrio", esPromo: true, pUnidad: 300, cPromo: 5, pPromo: 1300, stock: 46, desc: "Medidas aproximadas: 5,4 x 5,4 cm", img: ["stickerssanrio.jpg"] },
@@ -580,7 +597,7 @@
                 elementoImagen = `<div class="contenedor-imagenes">`;
                 prod.img.forEach(src => {
                     let claseImg = prod.img.length > 1 ? "img-producto-doble" : "img-producto";
-                    elementoImagen += `<img src="${src}" class="${claseImg}" alt="">`;
+                    elementoImagen += `<img src="${src}" class="${claseImg}" onload="this.onerror=null;" onerror="intentarCargarImagenProducto(this, '${src}')" alt="">`;
                 });
                 elementoImagen += `</div>`;
             }
@@ -963,4 +980,3 @@
 
 </body>
 </html>
-
