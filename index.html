@@ -393,7 +393,7 @@
             border: none;
             color: white;
             font-weight: bold;
-            font-size: 1.1()rem;
+            font-size: 1.1rem;
             font-family: 'Times New Roman', Times, serif;
             cursor: pointer;
         }
@@ -520,7 +520,6 @@
 </div>
 
 <script>
-    // FUNCION DE COMPATIBILIDAD EXTRA PARA LAS IMÁGENES DE LOS PRODUCTOS
     function intentarCargarImagenProducto(elemento, baseSrc) {
         let extensiones = ['.jpg', '.JPG', '.png', '.PNG', '.jpeg', '.JPEG'];
         let nombreSinExt = baseSrc.substring(0, baseSrc.lastIndexOf('.'));
@@ -549,7 +548,7 @@
         { id: 8, nombre: "Post it Chocomenta", esPromo: false, precio: 2500, stock: 3, desc: "Medidas aproximadas: 7x15 cm", img: ["postitchocomenta.jpg"] },
         { id: 9, nombre: "Billetera", esPromo: false, precio: 3500, stock: 5, desc: "Medidas aproximadas: 11x8 cm. Diseños súper lindos.", tieneVariantes: true, variantes: ["Kuromi", "Kuromi Púrpura", "Pompompurin", "Cinnamoroll", "My Melody"], img: ["billeteras.jpg"] },
         { id: 10, nombre: "Plancha de stickers chiikawa", esPromo: false, precio: 3500, stock: 10, desc: "¡Llená de ternura tus cuadernos!", img: ["planchastickerchiikawa.jpg"] },
-        { id: 11, nombre: "Porta photocards", esPromo: false, precio: 5000, stock: 6, desc: "Protegé tus cartas favoritas con estilo.", tieneVariantes: true, variantes: ["Black flower", "White notes", "Kaomoji rosa", "Kaomoji negro"], img: ["portaphotocard1.jpg", "portaphotocard2.jpg", "portaphotocard3.jpg", "portaphotocard4.jpg"] },
+        { id: 11, font-weight: "normal", nombre: "Porta photocards", esPromo: false, precio: 5000, stock: 6, desc: "Protegé tus cartas favoritas con estilo.", tieneVariantes: true, variantes: ["Black flower", "White notes", "Kaomoji rosa", "Kaomoji negro"], img: ["portaphotocard1.jpg", "portaphotocard2.jpg", "portaphotocard3.jpg", "portaphotocard4.jpg"] },
         { id: 12, nombre: "Llaveros DDLC", esPromo: false, precio: 4000, stock: 4, desc: "Tamaño aproximado: 5,5 cm. Del videojuego Doki Doki Literature Club.", tieneVariantes: true, variantes: ["Monika", "Sayori", "Natsuki", "Yuri"], img: ["llaverosddlc.jpg"] },
         { id: 13, nombre: "Figura acrilico DDLC", esPromo: false, precio: 5000, stock: 4, desc: "Tamaño aproximado: 6 cm. Perfectas para adornar tu espacio.", tieneVariantes: true, variantes: ["Monika", "Sayori", "Natsuki", "Yuri"], img: ["figuraacrilicoddlc.jpg"] },
         { id: 14, nombre: "Llaveros TBHK", esPromo: false, precio: 4000, stock: 7, desc: "Tamaño aproximado: 5,5 cm. De Toilet-Bound Hanako-kun.", tieneVariantes: true, variantes: ["Tsukasa", "Hanako", "Nene", "Kou", "Sakura", "Sosuke", "Tsuchigomori"], img: ["llaverostbhk.jpg"] },
@@ -889,19 +888,20 @@
         
         cajaInfo.style.display = "block";
         
+        // ALIAS "USACHIS" AGREGADO AUTOMÁTICAMENTE EN LOS MÉTODOS DE RESERVA Y TRANSFERENCIA
         if (metodoPago === "efectivo") {
             cajaInfo.innerHTML = `
                 <strong>‹3 Aviso de Reserva Importante:</strong><br>
                 En caso de pagar con efectivo deberás abonar al menos el <b>50%</b> del valor total mediante transferencia bancaria.<br><br>
                 <b>Datos de Cuenta (Banco Nación):</b><br>
-                • CBU / Alias: [Completa aquí tu Alias o CBU del Banco Nación]<br>
+                • Alias: <b>usachis</b><br>
                 • A nombre de: <b>Violeta Toconas</b><br><br>
                 Una vez hecho el depósito, envía el comprobante al Instagram de la tienda: <b>@usachistresure</b>
             `;
         } else if (metodoPago === "transferencia") {
             cajaInfo.innerHTML = `
                 <strong>Datos de Cuenta (Banco Nación):</strong><br>
-                • CBU / Alias: [Completa aquí tu Alias o CBU del Banco Nación]<br>
+                • Alias: <b>usachis</b><br>
                 • A nombre de: <b>Violeta Toconas</b><br><br>
                 ¡Importante! Al finalizar, recordá mandar la captura del comprobante al Instagram de la tienda: <b>@usachistresure</b>
             `;
